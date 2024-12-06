@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicación de Cálculos</title>
+    <title>Scaneagle jQuery Mobile</title>
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <link rel="stylesheet" href="styles.css">   <!-- Enlace al archivo CSS -->
+</head>
+<body>
+    <div class="container">
+        <h1>Scaneagle V1</h1>
+        <form id="calcForm">
+            <div class="form-group">
+                <label for="var_dir_viento">Dirección del Viento (°):</label>
+                <input type="number" id="var_dir_viento" value="318"required>
+            </div>
+            <div class="form-group">
+                <label for="var_rumbo_lanzamiento">Rumbo de Lanzamiento (°):</label>
+                <input type="number" id="var_rumbo_lanzamiento" value="268" required>
+            </div>
+            <div class="form-group">
+                <label for="var_inte_viento">Intensidad del Viento (kt):</label>
+                <input type="number" id="var_inte_viento" value="10"required>
+            </div>
+            <div class="form-group">
+                <label for="var_temp_oat">Temperatura OAT (°C):</label>
+                <input type="number" id="var_temp_oat" value="25" required>
+            </div>
+            <div class="form-group">
+                <label for="var_press_barom">Presión Barométrica (inHg):</label>
+                <input type="number" id="var_press_barom" value="29.88" required>
+            </div>
+            <div class="form-group">
+                <label for="var_elevacion">Elevación del aerodromo (ft):</label>
+                <input type="number" id="var_elevacion" value="300" required>
+            </div>
+            <div class="form-group">
+                <label for="var_peso_vacio">Peso Vacío aeronave (Kg):</label>
+                <input type="number" id="var_peso_vacio" value="16.71" required>
+            </div>
+            <div class="form-group">
+                <label for="var_durac_vuelo">Duración de Vuelo:</label>
+                <input type="number" id="var_durac_vuelo" value="5" required>
+            </div>
+            <div class="form-group">
+                <label for="var_torreta">Si tiene torreta articulada :</label>
+                <select id="var_torreta" data-role="slider" required>
+                    <option value="false">No</option>
+                    <option value="true">Sí</option>
+                </select>
+                <!--
+                <input type="checkbox" id="var_torreta" value=TRUE required>
+                -->
+            </div>
+            <div class="form-group">
+                <label for="var_rpms_anterior">RPMS del vuelo anterior:</label>
+                <input type="number" id="var_rpms_anterior" value="6000" required>
+            </div>
+            <button type="button" id="calculateBtn">Calcular</button>
+        </form>
+        <div id="results">
+            <h2>Resultados</h2>
+            <ul>
+                <li>Componente viendo cruzado (°): <span id="viento_cruzado_final"></span></li>
+                <li>Componente viendo de frente (°): <span id="viento_frente_final"></span></li>
+                <li>Altitud de presión (ft): <span id="altitud_presion_final1"></span></li>
+                <li>Altitud Densidad Final (ft): <span id="altitud_densidad_final1"></span></li>
+                <li>Combustible Minimo (Kg): <span id="combus_final"></span></li>
+                <li>Peso Total Aeronave (Kg): <span id="peso_total_final"></span></li>
+                <li>Peso Máximo de despegue GTOW: <span id="peso_max_final_GTOW"></span></li>
+                <li>Limite minimo de servicio (WOT): <span id="wot_final"></span></li>
+                <li>Presión de Lanzamiento aproximada (PSI): <span id="presion_launch_final"></span></li>
+                <li>Min Altitude Despegue (ft): <span id="min_altitude"></span></li>
+                <li>Safe Altitude Despegue (ft): <span id="safe_altitude"></span></li>
+                <li>Techo Límite a no superar (ft): <span id="techo_limite"></span></li>
+                <li>Velocidad Maxima (kt): <span id="vel_max"></span></li>
+                <li>Velocidad Segura (kt): <span id="vel_safe"></span></li>
+                <li>Velocidad de perdida (kt): <span id="vel_stall"></span></li>
+            </ul>
+        </div>
+
+        <h2>Conversión de Unidades</h2>
+        <div id="conversionSection">
+            <label for="conversionInput">Ingrese valor a convertir:</label>
+            <input type="number" id="conversionInput" placeholder="Escribe un número"><br>
+
+            <label for="conversionType">Seleccione tipo de conversión:</label>
+            <select id="conversionType">
+                <option value="feetToMeters">Pies a Metros</option>
+                <option value="mphToKph">Millas/h a Km/h</option>
+                <option value="poundsToKilograms">Libras a Kilogramos</option>
+                <option value="psiToPascals">PSI a Pascales</option>
+            </select><br>
+
+            <button type="button" id="convertBtn2">Convertir</button><br>
+
+            <label for="conversionResult">Resultado de la conversión:</label>
+            <span id="conversionResult"></span>
+        </div>
+    </div>
+    <script src="ScanEagle.js"></script>
+    <script src="conversion.js"></script>
+</body>
+</html>
