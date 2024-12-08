@@ -4,6 +4,7 @@ document.getElementById('calculateBtn').addEventListener('click', () => {
     let var_rumbo_lanzamiento = parseFloat(document.getElementById('var_rumbo_lanzamiento').value);
     let var_inte_viento = parseFloat(document.getElementById('var_inte_viento').value);
     let var_temp_oat = parseFloat(document.getElementById('var_temp_oat').value);
+    let var_punto_rocio = parseFloat(document.getElementById('var_punto_rocio').value);
     let var_press_barom = parseFloat(document.getElementById('var_press_barom').value);
     let var_elevacion = parseFloat(document.getElementById('var_elevacion').value);
     let var_peso_vacio = parseFloat(document.getElementById('var_peso_vacio').value);
@@ -13,8 +14,6 @@ document.getElementById('calculateBtn').addEventListener('click', () => {
     let torretaArticulada = $("#var_torreta").val() === "true";
     let var_rpms_anterior = parseFloat(document.getElementById('var_rpms_anterior').value);
     
-
-
     // Calculos de viento
     let dif_lanzam = Math.abs(var_dir_viento - var_rumbo_lanzamiento);
     let viento_cruzado_final = Math.abs (var_inte_viento * Math.sin(dif_lanzam));
@@ -35,10 +34,21 @@ document.getElementById('calculateBtn').addEventListener('click', () => {
     let altitud_presion_final2 = + var_elevacion + 1000 * (29.92 - presion_nivel_mar);
     //altitud_presion_final1 = altitud_presion_final1 ;
     
-
+    // Calculos de Temperatura
     let temperatura_isa1 = 15 - (altitud_presion_final1 / 1000) * 3.6;
     //const temperatura_isa2 = 15 - ((2 * var_elevacion) / 1000);
+    
+    //let humedad = 100 * (var_punto_rocio / var_temp_oat);
+    
+    const a = 17.62;
+    const b = 243.12;
+    let eT = 6.112 * Math.exp((a * var_temp_oat) / (b + var_temp_oat));
+    let eTd = 6.112 * Math.exp((a * var_punto_rocio) / (b + var_punto_rocio));
 
+    let humedad = 100 * (eTd / eT);
+
+
+    // Calculos de altitud Densidad
     let altitud_densidad_final1 = altitud_presion_final1 + ((var_temp_oat - temperatura_isa1) * 120);
 
     // Calculos de combustibles
@@ -94,6 +104,7 @@ document.getElementById('calculateBtn').addEventListener('click', () => {
     // Mostrar resultados
     document.getElementById('viento_cruzado_final').textContent = viento_cruzado_final.toFixed(2);
     document.getElementById('viento_frente_final').textContent = viento_frente_final.toFixed(2);
+    document.getElementById('humedad').textContent = humedad.toFixed(2);
     document.getElementById('altitud_presion_final1').textContent = altitud_presion_final1.toFixed(2); // Actualizado
     document.getElementById('altitud_densidad_final1').textContent = altitud_densidad_final1.toFixed(2);
     //document.getElementById('combus_final').textContent = typeof combus_final === 'number' ? combus_final.toFixed(2) : combus_final;
