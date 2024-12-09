@@ -113,6 +113,35 @@
             <label for="conversionResult">Resultado de la conversión:</label>
             <span id="conversionResult"></span>
         </div>
+
+
+
+        <h2>Calculo de Tiempos</h2>
+        <div class="form-group">
+            <label for="time1">Hora Prendida (HH:MM):</label>
+            <input type="text" id="time1" placeholder="Ejemplo: 12:30">
+        </div>
+        <div class="form-group">
+            <label for="time2">Hora Apagada (HH:MM):</label>
+            <input type="text" id="time2" placeholder="Ejemplo: 08:15">
+        </div>
+        <div class="form-group">
+            <label for="time3">Hora Despegue (HH:MM):</label>
+            <input type="text" id="time3" placeholder="Ejemplo: 08:15">
+        </div>
+        <div class="form-group">
+            <label for="time4">Hora Aterrizaje (HH:MM):</label>
+            <input type="text" id="time4" placeholder="Ejemplo: 08:15">
+        </div>
+        <button id="calculateTimeDiffBtn">Calcular Diferencia</button>
+        <div id="timeDiffResultAeronave" class="result">
+            <!-- Aquí se mostrará la diferencia de tiempo -->
+        </div>
+        <div id="timeDiffResultTripulacion" class="result">
+            <!-- Aquí se mostrará la diferencia de tiempo -->
+        </div>
+
+
     </div>
     <script src="ScanEagle.js"></script>
     <script src="conversion.js"></script>
