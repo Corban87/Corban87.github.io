@@ -76,22 +76,22 @@ function validarEntradas() {
     }
 
     // Peso vacío
-    if (isNaN(varPesoVacio) || varPesoVacio <11 || varPesoVacio > 17) {
-        mostrarError('var_peso_vacio', 'El peso vacío debe estar entre 11 y 17 kg.');
+    if (isNaN(varPesoVacio) || varPesoVacio < 0 || varPesoVacio > 25) {
+        mostrarError('var_peso_vacio', 'El peso vacío debe estar entre 0 y 25 kg.');
         esValido = false;
     }
 
     // Duración de vuelo
     if (isNaN(varDuracVuelo) || varDuracVuelo < 0 || varDuracVuelo > 24) {
-        mostrarError( 'var_durac_vuelo', 'La duración del vuelo debe estar entre 0 y 24 horas.');
+        mostrarError('var_durac_vuelo', 'La duración del vuelo debe estar entre 0 y 24 horas.');
         esValido = false;
     }
 
     // Torreta articulada (no requiere validación adicional si es un select con opciones fijas)
 
     // RPMS del vuelo anterior
-    if (isNaN(varRpmsAnterior) || varRpmsAnterior < 3000 || varRpmsAnterior > 8000) {
-        mostrarError('var_rpms_anterior', 'Los RPMS deben estar entre 3000 y 8,000.');
+    if (isNaN(varRpmsAnterior) || varRpmsAnterior < 0 || varRpmsAnterior > 10000) {
+        mostrarError('var_rpms_anterior', 'Los RPMS deben estar entre 0 y 10,000.');
         esValido = false;
     }
 
@@ -157,7 +157,6 @@ function realizarCalculos() {
     let temperatura_isa1 = 15 - (altitud_presion_final1 / 1000) * 3.6;
     let altitud_densidad_final1 = altitud_presion_final1 + ((var_temp_oat - temperatura_isa1) * 120);
 
-    
     // Cálculos de combustible
     let combus_final = 0;
     if (torretaArticulada) {
@@ -168,103 +167,12 @@ function realizarCalculos() {
 
     // Cálculos de peso
     let peso_total_final = var_peso_vacio + combus_final;
-    let peso_max_final_GTOW = (19 - (altitud_densidad_final1 * 0.0005)) + ((var_rpms_anterior-6000) * 0.005);
-    //let peso_max_final_GTOW = (19 - ( (altitud_densidad_final1/500) * 0.25)) + ( ((var_rpms_anterior-6000)/50) * 0.005);
-
-
-     //-------------------CALCULO PRESION LANZAMIENTO
-    // 1. Cálculos de densidad del aire Kg/m^3
-    //1 Hectopascales (hPa) = 0.0295 Pulgadas de mercurio (inHg)   y 1 inHg = 33.863886666667 hPa
-    let densidad_aire =  (var_press_barom*33.863886666667*28.9644) / (1000*8.31432*var_temp_oat);
-
-    // 2. Cálculo de la altitud densimetrica
-    let altitud_densimetrica = (44.3308 - 42.2665 * Math.pow(densidad_aire,0.234969))*1000;
-
-        // 3. Velocidad de lanzamiento
-    const Cl = 0.577;
-    const Sref = 0.746;
-
-    // theta    es equivalente a     dif_lanzam;
-    // Headwind_SI     es equivalente a     viento_frente_final
-    // Crosswind_SI     es equivalente a     viento_cruzado_final
-    
-    let WindHead = viento_frente_final * 1.94384;
-    let WindCross = viento_cruzado_final * 1.94384;
-    let percWind;
-
-    // Cálculo de porcentaje de viento
-    if (viento_frente_final >= 0 && viento_frente_final < 10) {
-        percWind = 0.6 * (viento_frente_final / 10);
-    } else if (viento_frente_final >= 10) {
-        percWind = 0.6;
-    } else if (viento_frente_final < 0) {
-        percWind = 1;
-    }
-
-    const AccountedWind_SI = -viento_frente_final * percWind;
-
-    // Velocidad de aire
-    const vel_TAS_aire = Math.sqrt ( (peso_total_final * 9.80665) / (0.5 * densidad_aire * Cl * Sref));
-
-    // Velocidad de lanzamiento
-    let vel_lanzamiento = vel_TAS_aire + AccountedWind_SI;
-
-    // 4. Calcular la Presion de lanzamiento  
-    let presion_launch_final = "";
-    presion_launch_final = Math.round(0.00203 * peso_total_final * Math.pow(vel_lanzamiento,2) + 0.01094 * peso_total_final * vel_lanzamiento + 0.0095 * peso_total_final + 0.00094 * Math.pow(vel_lanzamiento,3));
-    //presion_launch_final = presion_launch_final * 6894.76;
-
-    // 5. Calcular la aceleración de lanzamiento
-/*
-    function computeLaunchAccel(M_kg, P_psi) {
-        const coeffs = lSelections.Config.includes("Standard") || lSelections.Config.includes("Compact")
-            ? [-0.000070203542, 0.000001547947, 0.009938365766, -0.0003174701, -0.48770710003, 0.031088763761, 7.888898244506]
-            : [-0.000069238, 0.000001528, 0.009799177, -0.000311184, -0.48291127, 0.030751515, 7.919335145];
-
-        return coeffs.reduce((acc, coeff, index) => acc + coeff * Math.pow(M_kg, index) * Math.pow(P_psi, 3 - index), 0);
-    }
-    
-    function computeLaunchAccel(M_kg, P_psi) {
-        // Definición de los coeficientes para el cálculo.
-        // Si la configuración seleccionada incluye "Standard" o "Compact",
-        // se utilizan los primeros coeficientes; de lo contrario, se usan los segundos.
-        const coeffs = lSelections.Config.includes("Standard") || lSelections.Config.includes("Compact")
-            ? [
-                -0.000070203542, // Coeficiente para el término de M_kg^0 y P_psi^3
-                0.000001547947,  // Coeficiente para el término de M_kg^1 y P_psi^2
-                0.009938365766,  // Coeficiente para el término de M_kg^2 y P_psi^1
-                -0.0003174701,   // Coeficiente para el término de M_kg^3 y P_psi^0
-                -0.48770710003,  // Coeficiente para el término de M_kg^4
-                0.031088763761,  // Coeficiente para el término de M_kg^5
-                7.888898244506   // Coeficiente constante
-            ]
-            : [
-                -0.000069238,    // Coeficiente para el término de M_kg^0 y P_psi^3
-                0.000001528,     // Coeficiente para el término de M_kg^1 y P_psi^2
-                0.009799177,     // Coeficiente para el término de M_kg^2 y P_psi^1
-                -0.000311184,    // Coeficiente para el término de M_kg^3 y P_psi^0
-                -0.48291127,     // Coeficiente para el término de M_kg^4
-                0.030751515,     // Coeficiente para el término de M_kg^5
-                7.919335145      // Coeficiente constante
-            ];
-    
-        // Usar reduce para calcular la aceleración de lanzamiento acumulando cada término
-        // de la forma coeff * (M_kg^index) * (P_psi^(3 - index)).
-        return coeffs.reduce(
-            (acc, coeff, index) =>
-                acc + coeff * Math.pow(M_kg, index) * Math.pow(P_psi, 3 - index),
-            0 // Inicialización de la acumulación en 0
-        );
-    }
-*/
-
-
+    let peso_max_final_GTOW = (19 - (altitud_densidad_final1 * 0.0005)) + (6000 * 0.005);
 
     // Cálculos de rendimiento de motor
     let wot_final = 0;
     if (altitud_densidad_final1 >= 4000) {
-        //wot_final = 6650 - (16.625 * ((altitud_densidad_final1 - 4000) / 500));
-        wot_final = 6650 - (15.625 * ((altitud_densidad_final1 - 4000) / 500));
+        wot_final = 6650 - (16.625 * ((altitud_densidad_final1 - 4000) / 500));
     } else {
         wot_final = 6650;
     }
@@ -273,7 +181,6 @@ function realizarCalculos() {
     let min_altitude = var_elevacion + 400;
     let safe_altitude = var_elevacion + 1000;
 
-    /*
     // Cálculos de presión de lanzamiento
     let presion_launch_final = "";
     if (peso_total_final <= 17) {
@@ -290,7 +197,7 @@ function realizarCalculos() {
         presion_launch_final = "(656-665) PSI";
     } else {
         presion_launch_final = "Verifique el peso de despegue";
-    }*/
+    }
 
     // Cálculos de techo máximo a no superar
     let techo_limite = (600 * peso_total_final) + 6600;
@@ -310,7 +217,6 @@ function realizarCalculos() {
     document.getElementById('peso_max_final_GTOW').textContent = peso_max_final_GTOW.toFixed(2);
     document.getElementById('wot_final').textContent = wot_final.toFixed(2);
     document.getElementById('presion_launch_final').textContent = presion_launch_final;
-    document.getElementById('vel_lanzamiento').textContent = vel_lanzamiento.toFixed(2);
     document.getElementById('min_altitude').textContent = min_altitude.toFixed(2);
     document.getElementById('safe_altitude').textContent = safe_altitude.toFixed(2);
     document.getElementById('techo_limite').textContent = techo_limite.toFixed(2);
@@ -382,4 +288,3 @@ document.getElementById('calculateTimeDiffBtn').addEventListener('click', () => 
         document.getElementById('timeDiffResult').textContent = `Diferencia: ${timeDiff}`;
     }
 });
-
