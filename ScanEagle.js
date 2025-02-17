@@ -1,3 +1,4 @@
+
 // Función para validar todas las entradas
 function validarEntradas() {
     let esValido = true; // Bandera para determinar si todas las entradas son válidas
