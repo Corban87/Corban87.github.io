@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aplicación de Cálculos</title>
-    <title>Scaneagle jQuery Mobile</title>
     <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
@@ -12,79 +11,82 @@
 </head>
 <body>
     <div class="container">
-        <h1>Scaneagle V1</h1>
+        <h1>Scaneagle V4</h1>
         <form id="calcForm">
             <div class="form-group">
                 <label for="var_dir_viento">Dirección del Viento (°):</label>
-                <input type="number" id="var_dir_viento" value="318"required>
+                <input type="number" id="var_dir_viento" value="318" required>
+                <span class="error-message" id="error-var_dir_viento"></span>
             </div>
             <div class="form-group">
                 <label for="var_rumbo_lanzamiento">Rumbo de Lanzamiento (°):</label>
                 <input type="number" id="var_rumbo_lanzamiento" value="268" required>
+                <span class="error-message" id="error-var_rumbo_lanzamiento"></span>
             </div>
             <div class="form-group">
                 <label for="var_inte_viento">Intensidad del Viento (kt):</label>
-                <input type="number" id="var_inte_viento" value="10"required>
+                <input type="number" id="var_inte_viento" value="10" required>
+                <span class="error-message" id="error-var_inte_viento"></span>
             </div>
             <div class="form-group">
                 <label for="var_temp_oat">Temperatura OAT (°C):</label>
                 <input type="number" id="var_temp_oat" value="25" required>
-            </div>
-            <div class="form-group">
-                <label for="var_punto_rocio">Punto Rocio (°C):</label>
-                <input type="number" id="var_punto_rocio" value="23" required>
+                <span class="error-message" id="error-var_temp_oat"></span>
             </div>
             <div class="form-group">
                 <label for="var_press_barom">Presión Barométrica (inHg):</label>
                 <input type="number" id="var_press_barom" value="29.88" required>
+                <span class="error-message" id="error-var_press_barom"></span>
             </div>
             <div class="form-group">
-                <label for="var_elevacion">Elevación del aerodromo (ft):</label>
+                <label for="var_elevacion">Elevación del aeródromo (ft):</label>
                 <input type="number" id="var_elevacion" value="300" required>
+                <span class="error-message" id="error-var_elevacion"></span>
             </div>
             <div class="form-group">
                 <label for="var_peso_vacio">Peso Vacío aeronave (Kg):</label>
                 <input type="number" id="var_peso_vacio" value="16.71" required>
+                <span class="error-message" id="error-var_peso_vacio"></span>
             </div>
             <div class="form-group">
-                <label for="var_durac_vuelo">Duración de Vuelo:</label>
+                <label for="var_durac_vuelo">Duración de Vuelo (horas):</label>
                 <input type="number" id="var_durac_vuelo" value="5" required>
+                <span class="error-message" id="error-var_durac_vuelo"></span>
             </div>
             <div class="form-group">
-                <label for="var_torreta">Si tiene torreta articulada :</label>
+                <label for="var_torreta">Si tiene torreta articulada:</label>
                 <select id="var_torreta" data-role="slider" required>
                     <option value="false">No</option>
                     <option value="true">Sí</option>
                 </select>
-                <!--
-                <input type="checkbox" id="var_torreta" value=TRUE required>
-                -->
+                <span class="error-message" id="error-var_torreta"></span>
             </div>
             <div class="form-group">
-                <label for="var_rpms_anterior">RPMS del vuelo anterior:</label>
+                <label for="var_rpms_anterior">Últimas RPMS conocidas:</label>
                 <input type="number" id="var_rpms_anterior" value="6650" required>
+                <span class="error-message" id="error-var_rpms_anterior"></span>
             </div>
             <button type="button" id="calculateBtn">Calcular</button>
         </form>
         <div id="results">
             <h2>Resultados</h2>
             <ul>
-                <li>Componente viendo cruzado (°): <span id="viento_cruzado_final"></span></li>
-                <li>Componente viendo de frente (°): <span id="viento_frente_final"></span></li>
-                <li>Humedad (%): <span id="humedad"></span></li>
+                <li>Componente viento cruzado (°): <span id="viento_cruzado_final"></span></li>
+                <li>Componente viento de frente (°): <span id="viento_frente_final"></span></li>
                 <li>Altitud de presión (ft): <span id="altitud_presion_final1"></span></li>
                 <li>Altitud Densidad Final (ft): <span id="altitud_densidad_final1"></span></li>
-                <li>Combustible Minimo (Kg): <span id="combus_final"></span></li>
+                <li>Combustible Mínimo (Kg): <span id="combus_final"></span></li>
                 <li>Peso Total Aeronave (Kg): <span id="peso_total_final"></span></li>
                 <li>Peso Máximo de despegue GTOW: <span id="peso_max_final_GTOW"></span></li>
-                <li>Limite minimo de servicio (WOT): <span id="wot_final"></span></li>
+                <li>Limite mínimo de servicio (WOT): <span id="wot_final"></span></li>
                 <li>Presión de Lanzamiento aproximada (PSI): <span id="presion_launch_final"></span></li>
+                <li>Velocidad de Lanzamiento aproximada (Kt): <span id="vel_lanzamiento"></span></li>
                 <li>Min Altitude Despegue (ft): <span id="min_altitude"></span></li>
                 <li>Safe Altitude Despegue (ft): <span id="safe_altitude"></span></li>
                 <li>Techo Límite a no superar (ft): <span id="techo_limite"></span></li>
-                <li>Velocidad Maxima (kt): <span id="vel_max"></span></li>
+                <li>Velocidad Máxima (kt): <span id="vel_max"></span></li>
                 <li>Velocidad Segura (kt): <span id="vel_safe"></span></li>
-                <li>Velocidad de perdida (kt): <span id="vel_stall"></span></li>
+                <li>Velocidad de pérdida (kt): <span id="vel_stall"></span></li>
             </ul>
         </div>
 
@@ -96,13 +98,6 @@
             <label for="conversionType">Seleccione tipo de conversión:</label>
             <select id="conversionType">
                 <option value="feetToMeters">Pies a Metros</option>
-                <option value="MetersToFeet">Metros a Pies</option>
-                <option value="NauticalmilesToKilometers">Millas Nauticas a Kilometros</option>
-                <option value="KilometersToNauticalmiles">Kilometros a Millas Nauticas</option>
-                <option value="MilibToInch">Milibares a Pulgadas de Mercurio</option>
-                <option value="InchToMilib">Pulgadas de Mercurio a Milibares</option>
-                <option value="CentigratesToFarenheit">Centigrados a Farenheit</option>
-                <option value="farenheitToCentigrates">Farenheit a Centigrados</option>
                 <option value="mphToKph">Millas/h a Km/h</option>
                 <option value="poundsToKilograms">Libras a Kilogramos</option>
                 <option value="psiToPascals">PSI a Pascales</option>
@@ -114,36 +109,42 @@
             <span id="conversionResult"></span>
         </div>
 
-
+        <!-- Nueva sección para la resta de tiempos -->
 
         <h2>Calculo de Tiempos</h2>
+        
         <div class="form-group">
             <label for="time1">Hora Prendida (HH:MM):</label>
             <input type="text" id="time1" placeholder="Ejemplo: 12:30">
+            <span class="error-message" id="error-time1"></span>
         </div>
         <div class="form-group">
             <label for="time2">Hora Apagada (HH:MM):</label>
             <input type="text" id="time2" placeholder="Ejemplo: 08:15">
+            <span class="error-message" id="error-time2"></span>
         </div>
         <div class="form-group">
             <label for="time3">Hora Despegue (HH:MM):</label>
             <input type="text" id="time3" placeholder="Ejemplo: 08:15">
+            <span class="error-message" id="error-time3"></span>
         </div>
         <div class="form-group">
             <label for="time4">Hora Aterrizaje (HH:MM):</label>
             <input type="text" id="time4" placeholder="Ejemplo: 08:15">
+            <span class="error-message" id="error-time4"></span>
         </div>
-        <button id="calculateTimeDiffBtn">Calcular Diferencia</button>
-        <div id="timeDiffResultAeronave" class="result">
-            <!-- Aquí se mostrará la diferencia de tiempo -->
-        </div>
-        <div id="timeDiffResultTripulacion" class="result">
-            <!-- Aquí se mostrará la diferencia de tiempo -->
-        </div>
-
+        <button id="calculateTimeDiffBtn">Calcular Tiempos</button>
+        <div class="divider">
+            <div id="timeDiffResultAeronave" class="result">
+                <!-- Aquí se mostrará la diferencia de tiempo -->
+            </div>
+            <div id="timeDiffResultTripulacion" class="result">
+                <!-- Aquí se mostrará la diferencia de tiempo -->
+            </div>
 
     </div>
     <script src="ScanEagle.js"></script>
     <script src="conversion.js"></script>
 </body>
 </html>
+
