@@ -140,33 +140,4 @@ document.getElementById('calculateTimeDiffBtn').addEventListener('click', () => 
 });
 
 
-//Logica de autenticación
-document.getElementById('loginForm').addEventListener('submit', async (event) => {
-    event.preventDefault();
-  
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-  
-    try {
-      const response = await fetch('/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
-  
-      const result = await response.json();
-  
-      if (response.ok) {
-        document.getElementById('loginMessage').textContent = 'Inicio de sesión exitoso';
-      } else {
-        document.getElementById('loginMessage').textContent = result.message;
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      document.getElementById('loginMessage').textContent = 'Error al intentar iniciar sesión';
-    }
-  });
-  
   
