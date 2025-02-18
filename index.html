@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Vuelo</title>
+    <link rel="stylesheet" href="styles.css" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <link rel="stylesheet" href="styles.css">   <!-- Enlace al archivo CSS -->
+</head>
+<body>
+    <h1>Calculadora de Vuelo</h1>
+    <form id="flightForm">
+        <label for="var_dir_viento">Dirección del Viento (°):</label>
+        <input type="number" id="var_dir_viento" name="var_dir_viento" value="318" required>
+
+        <label for="var_rumbo_lanzamiento">Rumbo de Lanzamiento (°):</label>
+        <input type="number" id="var_rumbo_lanzamiento" name="var_rumbo_lanzamiento"value="268" required>
+
+        <label for="var_inte_viento">Intensidad del Viento (kt):</label>
+        <input type="number" id="var_inte_viento" name="var_inte_viento" value="10" required>
+
+        <label for="var_temp_oat">Temperatura OAT (°C):</label>
+        <input type="number" id="var_temp_oat" name="var_temp_oat" value="25" required>
+
+        <label for="var_temp_oat">Punto de rocio (°C):</label>
+        <input type="number" id="var_punto_rocio" name="var_punto_rocio" value="24" required>
+
+        <label for="var_press_barom">Presión Barométrica (inHg):</label>
+        <input type="number" id="var_press_barom" name="var_press_barom" value="29.88" required>
+
+        <label for="var_elevacion">Elevación del aeródromo (ft):</label>
+        <input type="number" id="var_elevacion" name="var_elevacion" value="300" required>
+
+        <label for="var_peso_vacio">Peso Vacío aeronave (Kg):</label>
+        <input type="number" id="var_peso_vacio" name="var_peso_vacio" value="16.71" required>
+
+        <label for="var_durac_vuelo">Duración de Vuelo (horas):</label>
+        <input type="number" id="var_durac_vuelo" name="var_durac_vuelo" value="5" required>
+
+        <label for="torretaArticulada">¿Tiene torreta articulada?</label>
+        <input type="checkbox" id="torretaArticulada" name="torretaArticulada">
+
+        <label for="var_rpms_anterior">RPMS del vuelo anterior:</label>
+        <input type="number" id="var_rpms_anterior" name="var_rpms_anterior" value="6500" required>
+
+        <button type="button" onclick="calcular()">Calcular</button>
+    </form>
+
+    <h2>Resultados</h2>
+    <p>Componente viento cruzado (°): <span id="viento_cruzado_final"></span></p>
+    <p>Componente viento de frente (°): <span id="viento_frente_final"></span></p>
+    <p>Humedad relativa (%): <span id="var_humedad"></span></p>
+    <p>Altitud de presión (ft): <span id="altitud_presion_final1"></span></p>
+    <p>Altitud Densidad Final (ft): <span id="altitud_densidad_final1"></span></p>
+    <p>Combustible Mínimo (Kg): <span id="combus_final"></span></p>
+    <p>Peso Total Aeronave (Kg): <span id="peso_total_final"></span></p>
+    <p>Peso Máximo de despegue GTOW: <span id="peso_max_final_GTOW"></span></p>
+    <p>Limite mínimo de servicio (WOT): <span id="wot_final"></span></p>
+    <p>Presión de Lanzamiento aproximada (PSI): <span id="presion_launch_final"></span></p>
+    <p>Min Altitude Despegue (ft): <span id="min_altitude"></span></p>
+    <p>Safe Altitude Despegue (ft): <span id="safe_altitude"></span></p>
+    <p>Techo Límite a no superar (ft): <span id="techo_limite"></span></p>
+    <p>Velocidad Máxima (kt): <span id="vel_max"></span></p>
+    <p>Velocidad Segura (kt): <span id="vel_safe"></span></p>
+    <p>Velocidad de pérdida (kt): <span id="vel_stall"></span></p>
+
+    <h2>Horas de Vuelo</h2>
+    <form id="timeForm">
+        <label for="hora_prendida">Hora Prendida:</label>
+        <input type="time" id="hora_prendida" name="hora_prendida">
+
+        <label for="hora_despegue">Hora Despegue:</label>
+        <input type="time" id="hora_despegue" name="hora_despegue">
+
+        <label for="hora_aterrizaje">Hora Aterrizaje:</label>
+        <input type="time" id="hora_aterrizaje" name="hora_aterrizaje">
+
+        <label for="hora_apagada">Hora Apagada:</label>
+        <input type="time" id="hora_apagada" name="hora_apagada">
+
+        <button type="button" onclick="calcularHoras()">Calcular Horas</button>
+    </form>
+
+    <h2>Resultados de Horas</h2>
+    <p>Tiempo Tripulación: <span id="duracion_total_vuelo"></span></p>
+    <p>Tiempo Aeronave: <span id="duracion_vuelo_aire"></span></p>
+
+    <script src="Calculos.js"></script>
+</body>
+</html>
