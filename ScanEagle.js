@@ -1,4 +1,3 @@
-
 // Función para validar todas las entradas
 function validarEntradas() {
     let esValido = true; // Bandera para determinar si todas las entradas son válidas
@@ -77,7 +76,7 @@ function validarEntradas() {
     }
 
     // Peso vacío
-    if (isNaN(varPesoVacio) || varPesoVacio <11 || varPesoVacio > 17) {
+    if (isNaN(varPesoVacio) || varPesoVacio < 11 || varPesoVacio > 17) {
         mostrarError('var_peso_vacio', 'El peso vacío debe estar entre 11 y 17 kg.');
         esValido = false;
     }
@@ -169,7 +168,7 @@ function realizarCalculos() {
 
     // Cálculos de peso
     let peso_total_final = var_peso_vacio + combus_final;
-    let peso_max_final_GTOW = (19 - (altitud_densidad_final1 * 0.0005)) + ((var_rpms_anterior-6000) * 0.005);
+    let peso_max_final_GTOW = (19 - (altitud_densidad_final1 * 0.0005)) + ((var_rpms_anterior - 6000) * 0.005);
     //let peso_max_final_GTOW = (19 - ( (altitud_densidad_final1/500) * 0.25)) + ( ((var_rpms_anterior-6000)/50) * 0.005);
 
 
@@ -383,4 +382,3 @@ document.getElementById('calculateTimeDiffBtn').addEventListener('click', () => 
         document.getElementById('timeDiffResult').textContent = `Diferencia: ${timeDiff}`;
     }
 });
-
